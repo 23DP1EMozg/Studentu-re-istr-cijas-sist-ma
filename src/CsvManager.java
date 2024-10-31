@@ -9,36 +9,63 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CsvManager {
     private String filepath = "src/data.csv";
+    Validator validator = new Validator();
     
     public CsvManager(){
         
     }
 
-    public void readFile(){
+    public void readFile() {
         BufferedReader reader = null;
         String line = "";
-
-         try{
-            reader =  new BufferedReader(new FileReader(filepath));
-            while((line = reader.readLine()) != null){
-
-                String[] row = line.split(",");
-
-                for(String index : row){
-                    System.out.printf("%-10s", index);
+        int[] columnWidths = null;
+    
+    
+        try {
+            reader = new BufferedReader(new FileReader(filepath));
+    
+            // Print Header Line
+            if ((line = reader.readLine()) != null) {
+                String[] headers = line.split(",");
+                
+                
+                columnWidths = new int[headers.length];
+                for (int i = 0; i < headers.length; i++) {
+                    columnWidths[i] = Math.max(headers[i].length(), 25);
+                }
+    
+                for (int i = 0; i < headers.length; i++) {
+                    System.out.printf("%-" + columnWidths[i] + "s", headers[i]);
+                }
+                System.out.println();
+    
+                // Print separator
+                for (int width : columnWidths) {
+                    System.out.print("-".repeat(width));
                 }
                 System.out.println();
             }
-        }
-        catch(Exception e){
+    
+            
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                
+                for (int i = 0; i < row.length; i++) {
+                    System.out.printf("%-" + columnWidths[i] + "s", row[i]);
+                }
+                System.out.println();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally{
+        } finally {
             try {
-                reader.close();
+                if (reader != null) {
+                    reader.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -63,8 +90,9 @@ public class CsvManager {
         return students;
     }
 
-    public String convertToCSV(String[] data) {
+    public String convertToCSV(Student s) {
         String c = "";
+        String[] data = {s.name, s.lastname, s.email, s.group};
         for(int i = 0; i<data.length; i++){
             c += data[i] + ",";
         }
@@ -73,13 +101,6 @@ public class CsvManager {
     }
 
 
-    private void clearFile(String filepath) throws IOException {
-        PrintWriter writer = new PrintWriter(filepath);
-        writer.print("");
-        writer.close();
-    }
-
-    
 
     public void writeCSV(List<Student> data) throws IOException{
         
@@ -88,14 +109,14 @@ public class CsvManager {
             FileWriter writer = new FileWriter(filepath);
             BufferedWriter info = new BufferedWriter(writer);
             
-
             if (file.length() == 0) {
                 info.write("name, lastname, email, group");
                 info.newLine();
             }
 
             for (Student s : data) {
-                info.write(convertToCSV(new String[]{s.name, s.lastname, s.email, s.group}) + "\n");
+                
+                info.write(convertToCSV(s) + "\n");
             }
             
             info.close();
@@ -104,5 +125,30 @@ public class CsvManager {
             System.out.println(e);
         }
 
+    }
+
+    @SuppressWarnings("unlikely-arg-type")
+    public void removeUser(String name){
+        List<Student> students = getDataFromCSV();
+        
+        Optional<Student> student = students.stream().filter(s -> s.name.equalsIgnoreCase(name)).findFirst();
+
+        if(student.isEmpty()){
+            System.out.println("There isnt a user with the name " + name + " in the file");
+        }else{
+            Student s = student.get();
+            students.remove(s);
+        }
+
+        if(students.size() > 0){
+            students.remove(0);
+        }
+
+        try {
+            writeCSV(students);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

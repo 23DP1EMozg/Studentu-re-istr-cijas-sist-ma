@@ -12,25 +12,36 @@ public class main {
         Scanner scanner = new Scanner(System.in);
         Registration registration = new Registration();
         CsvManager csvManager = new CsvManager();
+        StudentManager studentManager = new StudentManager();
         
         //init
-        List<Student> students = csvManager.getDataFromCSV();
-        if(students.size() > 0){
-            students.remove(0);
+        List<Student> students = studentManager.getStudentsList();
+
+
+        while (true) {
+            
+            System.out.println();
+            System.out.println("register / show / remove / exit");
+            String ans = scanner.nextLine();
+
+            if(ans.equalsIgnoreCase("register")){
+                Student student = registration.promptUserData();
+                registration.registerStudent(student);
+            }else if(ans.equalsIgnoreCase("SHOW")){
+                csvManager.readFile();
+            }else if(ans.equalsIgnoreCase("REMOVE")){
+                System.out.println("Enter the name of the student which you want to remove: ");
+                String name = scanner.nextLine();
+                studentManager.removeStudent(name);
+            }else if(ans.equalsIgnoreCase("exit")){
+                break;
+            }else{
+                System.out.println("invalid input");
+            }
+
         }
 
-
-        System.out.println("register / show / remove / exit");
-        String ans = scanner.nextLine();
-
-        if(ans.toUpperCase() == "REGISTER"){
-            Student student = registration.promptUserData();            
-            students.add(student);
-            csvManager.writeCSV(students);
-        }else if(ans.toUpperCase() == "SHOW"){
-            csvManager.readFile();
-        }
-
+        
 
         scanner.close();
         

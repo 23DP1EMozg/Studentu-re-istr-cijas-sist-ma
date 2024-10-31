@@ -1,4 +1,7 @@
 package src;
+import java.util.List;
+import java.util.ArrayList;
+
 
 public class Student {
     public String name;
@@ -11,7 +14,11 @@ public class Student {
         this.lastname = lastname;
         this.email = email;
         this.group = group;
+
     }
 
+
+
+    
     
 }
