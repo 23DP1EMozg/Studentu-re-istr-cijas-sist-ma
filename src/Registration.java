@@ -19,16 +19,16 @@ public class Registration {
     }
 
     public Student promptUserData(){
-        System.out.println("Enter name: ");
+        System.out.println(Colors.YELLOW + "Enter name: " + Colors.RESET);
         String name = scanner.nextLine();
 
-        System.out.println("Enter lastname: ");
+        System.out.println(Colors.YELLOW + "Enter lastname: " + Colors.RESET);
         String lastname = scanner.nextLine();
 
-        System.out.println("Enter email: ");
+        System.out.println(Colors.YELLOW + "Enter email: " + Colors.RESET);
         String email = scanner.nextLine();
 
-        System.out.println("Enter group: ");
+        System.out.println(Colors.YELLOW + "Enter group: " + Colors.RESET);
         String group = scanner.nextLine();
 
         return new Student(name, lastname, email, group);
@@ -44,9 +44,9 @@ public class Registration {
         if(unique && fieldsArentEmpty){
             List<Student> updatedList = studentManager.addToStudentsList(student);
             csvManager.writeCSV(updatedList);
-            System.out.println(student.name + " has been added!");
+            System.out.println(Colors.MAGENTA + student.name +Colors.RESET + Colors.GREEN + " has been added!" + Colors.RESET);
         }else{
-            System.out.println("There was a problem with adding the student");
+            System.out.println(Colors.RED + "There was a problem with adding the student" + Colors.RESET);
         }
 
     }

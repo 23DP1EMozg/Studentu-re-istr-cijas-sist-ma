@@ -14,14 +14,14 @@ public class main {
         CsvManager csvManager = new CsvManager();
         StudentManager studentManager = new StudentManager();
         
-        //init
-        List<Student> students = studentManager.getStudentsList();
-
 
         while (true) {
             
             System.out.println();
-            System.out.println("register / show / remove / exit");
+            System.out.println(Colors.CYAN + "register " + Colors.RESET +
+             Colors.MAGENTA + " / show" + Colors.RESET +
+             Colors.RED + " / remove " + Colors.RESET +
+             Colors.BLACK +" / exit" + Colors.RESET);
             String ans = scanner.nextLine();
 
             if(ans.equalsIgnoreCase("register")){
@@ -30,13 +30,14 @@ public class main {
             }else if(ans.equalsIgnoreCase("SHOW")){
                 csvManager.readFile();
             }else if(ans.equalsIgnoreCase("REMOVE")){
-                System.out.println("Enter the name of the student which you want to remove: ");
+                System.out.println(Colors.YELLOW + "Enter the name of the student which you want to remove: " + Colors.RESET);
                 String name = scanner.nextLine();
                 studentManager.removeStudent(name);
             }else if(ans.equalsIgnoreCase("exit")){
+                System.out.println(Colors.MAGENTA + "Goodbye!" + Colors.RESET);
                 break;
             }else{
-                System.out.println("invalid input");
+                System.out.println(Colors.RED + "invalid input" + Colors.RESET);
             }
 
         }

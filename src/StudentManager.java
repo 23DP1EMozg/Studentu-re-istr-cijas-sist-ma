@@ -44,7 +44,8 @@ public class StudentManager {
         Optional<Student> student = students.stream().filter(s -> s.name.equalsIgnoreCase(name)).findFirst();
 
         if(student.isEmpty()){
-            System.out.println("There isnt a user with the name " + name + " in the file");
+            System.out.println(Colors.RED + "There isnt a user with the name "+Colors.RESET + Colors.MAGENTA +name + Colors.RESET + Colors.RED + " in the file" + Colors.RESET);
+            return;
         }else{
             Student s = student.get();
             students.remove(s);
@@ -56,9 +57,8 @@ public class StudentManager {
 
         try {
             manager.writeCSV(students);
-            System.out.println(student.get().name + " has benn removed!");
+            System.out.println(Colors.MAGENTA + student.get().name +Colors.RESET+ Colors.GREEN +" has benn removed!" + Colors.RESET);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

@@ -21,12 +21,12 @@ public class Validator {
         List<String> emails = new ArrayList<>();
 
         for(int i = 0; i<list.size(); i++){
-            lastNames.add(list.get(i).name);
-            emails.add(list.get(i).lastname);
+            lastNames.add(list.get(i).lastname);
+            emails.add(list.get(i).email);
 
         }
 
-        int lastnameCount = Collections.frequency(lastNames, student.name);
+        int lastnameCount = Collections.frequency(lastNames, student.lastname);
         int emailCount = Collections.frequency(emails, student.email);
 
 

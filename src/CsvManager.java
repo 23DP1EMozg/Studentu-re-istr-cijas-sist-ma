@@ -27,8 +27,13 @@ public class CsvManager {
     
         try {
             reader = new BufferedReader(new FileReader(filepath));
+            String[] colors = {
+            Colors.GREEN,
+            Colors.CYAN,
+            Colors.BLUE,
+            Colors.YELLOW
+        };
     
-            // Print Header Line
             if ((line = reader.readLine()) != null) {
                 String[] headers = line.split(",");
                 
@@ -39,23 +44,27 @@ public class CsvManager {
                 }
     
                 for (int i = 0; i < headers.length; i++) {
+                    System.out.print(colors[i]);
                     System.out.printf("%-" + columnWidths[i] + "s", headers[i]);
+                    System.out.print(Colors.RESET);
                 }
                 System.out.println();
     
-                // Print separator
                 for (int width : columnWidths) {
-                    System.out.print("-".repeat(width));
+                    System.out.print(Colors.MAGENTA + "-".repeat(width) + Colors.RESET);
                 }
                 System.out.println();
             }
-    
             
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
                 
+                
                 for (int i = 0; i < row.length; i++) {
+ 
+                    System.out.print(colors[i]);
                     System.out.printf("%-" + columnWidths[i] + "s", row[i]);
+                    System.out.print(Colors.RESET);
                 }
                 System.out.println();
             }
@@ -84,7 +93,7 @@ public class CsvManager {
                 students.add(student);
             }
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
 
         return students;
@@ -127,28 +136,4 @@ public class CsvManager {
 
     }
 
-    @SuppressWarnings("unlikely-arg-type")
-    public void removeUser(String name){
-        List<Student> students = getDataFromCSV();
-        
-        Optional<Student> student = students.stream().filter(s -> s.name.equalsIgnoreCase(name)).findFirst();
-
-        if(student.isEmpty()){
-            System.out.println("There isnt a user with the name " + name + " in the file");
-        }else{
-            Student s = student.get();
-            students.remove(s);
-        }
-
-        if(students.size() > 0){
-            students.remove(0);
-        }
-
-        try {
-            writeCSV(students);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
 }
